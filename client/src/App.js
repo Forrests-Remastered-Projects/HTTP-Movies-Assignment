@@ -25,12 +25,12 @@ const App = () => {
   };
 
   const removeMovie = id => {
-    setMovies(movies.filter(movie => movie.id !== id));
+    setMovies(movies.filter(movie => movie.id != id));
   };
 
   const updateMovie = updatedMovie => {
     setMovies(
-      movies.map(movie => (movie.id === updatedMovie.id ? updatedMovie : movie))
+      movies.map(movie => (movie.id == updatedMovie.id ? updatedMovie : movie))
     );
   };
 
@@ -50,9 +50,7 @@ const App = () => {
       <Route
         path="/update-movie/:id"
         render={props => {
-          const movie = movies.find(
-            movie => movie.id === props.match.params.id
-          );
+          const movie = movies.find(movie => movie.id == props.match.params.id);
           if (!movie) {
             return <div>Loading...</div>;
           }
@@ -69,9 +67,7 @@ const App = () => {
       <Route
         path="/movies/:id"
         render={props => {
-          const movie = movies.find(
-            movie => movie.id === props.match.params.id
-          );
+          const movie = movies.find(movie => movie.id == props.match.params.id);
           if (!movie) {
             return <div>Loading...</div>;
           }

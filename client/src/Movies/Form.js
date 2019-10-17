@@ -28,7 +28,6 @@ const Form = props => {
       .then(res => {
         console.log(res);
         props.updateMovie(res.data);
-        // props.getMovies();
         props.history.push("/");
       })
       .catch(err => console.log(err.response));
