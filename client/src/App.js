@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Route } from "react-router-dom";
 import SavedList from "./Movies/SavedList";
 import MovieList from "./Movies/MovieList";
-import Movie from "./Movies/Movie";
+import Movie, { addToSavedList } from "./Movies/Movie";
 import Form from "./Movies/Form";
 import axios from "axios";
 
@@ -10,7 +10,7 @@ const App = () => {
   const [savedList, setSavedList] = useState([]);
   const [movies, setMovies] = useState([]);
 
-  addToSavedList = movie => {
+  const addToSavedList = movie => {
     console.log(this.state.savedListList);
     const savedList = this.state.savedList;
     savedList.push(movie);
@@ -25,7 +25,7 @@ const App = () => {
   };
 
   const removeMovie = id => {
-    setMovies(movies.filter(movie => movie.id != id));
+    setMovies(movies.filter(movie => movie.id !== id));
   };
 
   const updateMovie = updatedMovie => {
@@ -50,12 +50,14 @@ const App = () => {
       <Route
         path="/update-movie/:id"
         render={props => {
-          const movie = movies.find(movie => movie.id == props.match.params.id);
+          const movie = movies.find(
+            movie => movie.id === props.match.params.id
+          );
           if (!movie) {
             return <div>Loading...</div>;
           }
           return (
-            <UpdateForm
+            <Form
               {...props}
               movie={movie}
               updateMovie={updateMovie}
@@ -67,7 +69,9 @@ const App = () => {
       <Route
         path="/movies/:id"
         render={props => {
-          const movie = movies.find(movie => movie.id == props.match.params.id);
+          const movie = movies.find(
+            movie => movie.id === props.match.params.id
+          );
           if (!movie) {
             return <div>Loading...</div>;
           }

@@ -4,70 +4,32 @@ import MovieCard from "./MovieCard";
 import { Link } from "react-router-dom";
 
 export default class Movie extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      movie: null
-    };
-  }
-
-  componentDidMount() {
-    this.fetchMovie(this.props.match.params.id);
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (this.props.match.params.id !== newProps.match.params.id) {
-      this.fetchMovie(newProps.match.params.id);
-    }
-  }
-
-  fetchMovie = id => {
-    axios
-      .get(`http://localhost:5000/api/movies/${id}`)
-      .then(res => this.setState({ movie: res.data }))
-      .catch(err => console.log(err.response));
-  };
-
   saveMovie = () => {
     const addToSavedList = this.props.addToSavedList;
     addToSavedList(this.state.movie);
   };
 
-  deleteItem = e => {
-    e.preventDefault();
+  deleteMovie = event => {
+    event.preventDefault();
     axios
-      .delete(`http://localhost:5000/api/movies/${this.props.match.params.id}`)
+      .delete(`http://localhost:5000/api/movies/${this.props.movie.id}`)
       .then(res => {
-        this.props.updateItems(res.data);
-        this.props.history.push("/item-list");
+        console.log(res);
+        this.props.removeMovie(this.props.movie.id);
+        this.props.history.push("/");
       })
       .catch(err => console.log(err.response));
   };
 
   render() {
-    if (!this.state.movie) {
-      return <div>Loading movie information...</div>;
-    }
-
     return (
       <div className="save-wrapper">
-        <MovieCard movie={this.state.movie} />
-        <button className="delete-button" onClick={this.deleteItem}>
-          Delete
-        </button>
-
-        <Link
-          to={`/update-movie/${this.state.movie.id}`}
-          className="update-button"
-        >
-          Update Movie
-        </Link>
+        <MovieCard movie={this.props.movie} />
         <div className="save-button" onClick={this.saveMovie}>
           Save
         </div>
-        <Link to={"/"}>
-          <div className="home-button-card">Home</div>
-        </Link>
+        <Link to={`/update-movie/${this.props.movie.id}`}>Update</Link>
+        <button onClick={this.deleteMovie}>Delete</button>
       </div>
     );
   }
